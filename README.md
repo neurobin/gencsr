@@ -1,5 +1,10 @@
 Simple CSR generator written in Bash.
 
+#Dependency
+
+1. Bash
+2. openssl
+
 # Usage
 
 1. Fill the **dom.list** file with domain and subdomain names (one per line, both www and non-www versions). The top entry is taken as CN (Common Name).
