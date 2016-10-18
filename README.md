@@ -1,31 +1,40 @@
-Simple CSR generator
+Simple CSR generator written in Bash.
 
-#Usage
+# Usage
 
-1. Fill the **doms** file with domain and subdomain names (one per line)
-2. Edit the **gencsr** file and run it:
+1. Fill the **dom.list** file with domain and subdomain names (one per line, both www and non-www versions).
+2. Edit the **gencsr.conf** file and put necessary information.
+3. Run the `gencsr` file:
 
 ```sh
+chmod u+x gencsr #giving execution permission
 ./gencsr
 ```
 
-#Editables in gencsr script:
+# Options
 
-**General:**
+Option | Alt. option | Details
+------ | ----------- | -------
+  -df  | --dom-file | file containing domain per line
+  -k   | --key      | private key file
+  -ks  | --key-size | key size
+  -csr | --csr      | CSR file
+  -c   | --conf     | configuration file
+  -n   | --new      | Always create new
+  -h   | --help     | show help
+  -v   | --version  | show version info
+  
+# Examples
+
+The following creates a new 2048 bit key and saves it into key\_file, takes necessary information from conf\_file, takes the domain list from domain\_file and creates a CSR file named csr\_file.csr:
 
 ```sh
-country_code=''     # Put two character country code
-state=''            # Put state name
-locality=''         # Put city name
-org=''              # Put organization name
-org_unit=''         # Put organization unit name
-email=''            # Put email address
+./gencsr -n -ks 2048 -k key_file -df domain_file -c conf_file -csr csr_file.csr
 ```
 
-**More:**
+The following creates CSR using the existing key_file:
 
 ```sh
-domfile=doms        # Path to file containing domain names per line
-dkeyfile=dom.key    # Path to a private key file (to be created)
-csrfile=dom.csr     # Path to the CSR file (to be created)
+./gencsr -k key_file -df domain_file -c conf_file -csr csr_file.csr
 ```
+
