@@ -1,6 +1,6 @@
 Simple CSR generator written in Bash.
 
-#Dependency
+# Dependency
 
 1. Bash
 2. openssl
@@ -42,7 +42,7 @@ The following creates CSR using the existing key_file:
 ```sh
 ./gencsr -k key_file -df domain_file -c conf_file -csr csr_file.csr
 ```
-#Configuration file
+# Configuration file
 This file is parsed by gencsr to get various information. Path to this file can be given by the `-c` or `--conf` options. If no path is given, the path is defaulted to `./gencsr.conf`.
 
 This is how a typical configuration file for gencsr looks like:
@@ -61,7 +61,7 @@ OraganizationUnit=Technology or whatever    # Put organization unit name
 Email=mymail@somedomain.com                 # Put email address
 ```
 
-#Domain file
+# Domain file
 This is a file containing domain names per line. Put both www and non-www versions. Put the CN (root domain) at top. Path to this file can be provided by the `-df` or `--dom-file` options. If no path is given, it's defaulted to `./dom.list`.
 
 This is how a domain file looks like:
