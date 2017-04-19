@@ -9,7 +9,7 @@ Simple CSR generator written in Bash.
 
 1. Fill the **dom.list** file with domain and subdomain names (one per line, both www and non-www versions). The top entry is taken as CN (Common Name).
 2. Edit the **gencsr.conf** file and put necessary information (country code, state, organization name etc ...).
-3. Run the `gencsr` file:
+3. Run the `gencsr` script:
 
 ```sh
 chmod u+x gencsr #giving execution permission
