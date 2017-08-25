@@ -16,15 +16,15 @@ help="
 Usage:
   gencsr [options]
 Options:
-  -df  | --dom-file                 : file containing domain per line
-  -k   | --key                      : private key file
-  -ks  | --key-size                 : key size
-  -csr | --csr                      : CSR file
-  -ocf   | --openssl-config-file    : Path to openssl config file.
-  -c   | --conf                     : configuration file
-  -n   | --new                      : Always create new
-  -h   | --help                     : show help
-  -v   | --version                  : show version info
+  -df  | --dom-file         : file containing domain per line
+  -k   | --key              : private key file
+  -ks  | --key-size         : key size
+  -csr | --csr              : CSR file
+  -c   | --conf             : configuration file
+  -oc  | --openssl-conf     : OpenSSL configuration file
+  -n   | --new              : Always create new
+  -h   | --help             : show help
+  -v   | --version          : show version info
 "
 
 
@@ -79,7 +79,7 @@ while [ $# -gt 0 ]; do
             conf="$(get_arg "$2")"
             shift
             ;;
-            -ocf|--openssl-config-file)
+            -oc|--openssl-conf)
             oconf="$(get_arg "$2")"
             shift
             ;;
@@ -114,7 +114,7 @@ if [[ -f "$oconf" ]]; then
     echo "OpenSSL config file: $oconf"
 else
     err "OpenSSL config file not found: $oconf
-Try giving the path with -ocf option."
+Try giving the path with -oc option."
     exit 1
 fi
 
