@@ -16,15 +16,15 @@ help="
 Usage:
   gencsr [options]
 Options:
-  -df  | --dom-file : file containing domain per line
-  -k   | --key      : private key file
-  -ks  | --key-size : key size
-  -csr | --csr      : CSR file
-  -r   | --redhat   : Redhat Path for openssl.cnf
-  -c   | --conf     : configuration file
-  -n   | --new      : Always create new
-  -h   | --help     : show help
-  -v   | --version  : show version info
+  -df  | --dom-file                 : file containing domain per line
+  -k   | --key                      : private key file
+  -ks  | --key-size                 : key size
+  -csr | --csr                      : CSR file
+  -ocf   | --openssl-config-file    : Redhat Path for openssl.cnf
+  -c   | --conf                     : configuration file
+  -n   | --new                      : Always create new
+  -h   | --help                     : show help
+  -v   | --version                  : show version info
 "
 
 
@@ -113,7 +113,8 @@ done
 if [[ -f "$oconf" ]]; then
     echo "OpenSSL config file: $oconf"
 else
-    err "OpenSSL config file not found: $oconf"
+    err "OpenSSL config file not found: $oconf
+Try giving the path with -ocf option."
     exit 1
 fi
 
