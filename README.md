@@ -20,15 +20,15 @@ chmod u+x gencsr #giving execution permission
 
 Option | Alt. option | Details | Default value
 ------ | ----------- | ------- | --------------
-  -df  | --dom-file | file containing domain per line | dom.list
-  -k   | --key      | private key file | dom.key
-  -ks  | --key-size | key size | 4096
-  -csr | --csr      | CSR file | dom.csr
-  -ocf   | --openssl-config-file   | OpenSSL config file path (use this if `gencsr` can't find it)
-  -c   | --conf     | configuration file | gencsr.conf
-  -n   | --new      | Always create new | false
-  -h   | --help     | show help | false
-  -v   | --version  | show version info | false
+  -df  | --dom-file     | file containing domain per line | dom.list
+  -k   | --key          | private key file | dom.key
+  -ks  | --key-size     | key size | 4096
+  -csr | --csr          | CSR file | dom.csr
+  -c   | --conf         | configuration file | gencsr.conf
+  -oc  | --openssl-conf | OpenSSL config file (use this if `gencsr` can't find it) | `/etc/ssl/openssl.cnf` or `/etc/pki/tls/openssl.cnf` or `openssl.cnf`
+  -n   | --new          | Always create new | false
+  -h   | --help         | show help | false
+  -v   | --version      | show version info | false
   
 # Examples
 
