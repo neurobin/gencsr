@@ -25,7 +25,7 @@ Option | Alt. option | Details | Default value
   -ks  | --key-size     | key size | 4096
   -csr | --csr          | CSR file | dom.csr
   -c   | --conf         | configuration file | gencsr.conf
-  -oc  | --openssl-conf | OpenSSL config file (use this if `gencsr` can't find it) | `/etc/ssl/openssl.cnf` or `/etc/pki/tls/openssl.cnf` or `openssl.cnf`
+  -oc  | --openssl-conf | OpenSSL config file (use this if `gencsr` can't find it) | `/etc/ssl/openssl.cnf` or `/etc/pki/tls/openssl.cnf` or `./openssl.cnf`
   -n   | --new          | Always create new | false
   -h   | --help         | show help | false
   -v   | --version      | show version info | false
