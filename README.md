@@ -24,6 +24,7 @@ Option | Alt. option | Details | Default value
   -k   | --key      | private key file | dom.key
   -ks  | --key-size | key size | 4096
   -csr | --csr      | CSR file | dom.csr
+  -r   | --redhat   | Use Redhat Path for openssl.cnf
   -c   | --conf     | configuration file | gencsr.conf
   -n   | --new      | Always create new | false
   -h   | --help     | show help | false

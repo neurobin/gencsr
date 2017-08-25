@@ -20,6 +20,7 @@ Options:
   -k   | --key      : private key file
   -ks  | --key-size : key size
   -csr | --csr      : CSR file
+  -r   | --redhat   : Redhat Path for openssl.cnf
   -c   | --conf     : configuration file
   -n   | --new      : Always create new
   -h   | --help     : show help
@@ -33,7 +34,7 @@ csrfile=dom.csr     # Path to the CSR file (to be created)
 conf=gencsr.conf    # Configuration file
 key_size=4096       # key size
 new=false           # if true, gencsr will always create new files without using existing ones
-
+oconf=/etc/ssl/openssl.cnf # Default path Openssl config
 
 err(){
     echo "E: $@" >>/dev/stderr
@@ -58,7 +59,10 @@ while [ $# -gt 0 ]; do
             dkeyfile="$(get_arg "$2")"
             shift
             ;;
-
+            -r|--redhat)
+            oconf=/etc/pki/tls/openssl.cnf
+            shift
+            ;;
             -csr|--csr)
             csrfile="$(get_arg "$2")"
             shift
@@ -147,7 +151,7 @@ if [ -n "$email" ]; then
     subj="$subj/emailAddress=$email"
 fi
 
-if openssl req -new -sha256 -key "$dkeyfile" -subj "$subj" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf  <(printf "[SAN]\nsubjectAltName=$subjectAltName")) -out "$csrfile"; then
+if openssl req -new -sha256 -key "$dkeyfile" -subj "$subj" -reqexts SAN -config <(cat "$oconf" <(printf "[SAN]\nsubjectAltName=$subjectAltName")) -out "$csrfile"; then
     echo "Successfully created CSR file: $csrfile"
 else
     err 'Failed to create CSR file!'
