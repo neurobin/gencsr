@@ -175,4 +175,5 @@ if openssl req -new -sha256 -key "$dkeyfile" -subj "$subj" -reqexts SAN -config 
     echo "Successfully created CSR file: $csrfile"
 else
     err 'Failed to create CSR file!'
+    exit 1
 fi
