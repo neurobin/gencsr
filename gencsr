@@ -20,7 +20,7 @@ Options:
   -k   | --key                      : private key file
   -ks  | --key-size                 : key size
   -csr | --csr                      : CSR file
-  -ocf   | --openssl-config-file    : Redhat Path for openssl.cnf
+  -ocf   | --openssl-config-file    : Path to openssl config file.
   -c   | --conf                     : configuration file
   -n   | --new                      : Always create new
   -h   | --help                     : show help
