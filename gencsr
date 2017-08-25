@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-ver='0.0.2'
+ver='0.0.3'
 auth='Md. Jahidul Hamid'
 bug='https://github.com/neurobin/gencsr/issues'
 ver_info="
@@ -34,11 +34,23 @@ csrfile=dom.csr     # Path to the CSR file (to be created)
 conf=gencsr.conf    # Configuration file
 key_size=4096       # key size
 new=false           # if true, gencsr will always create new files without using existing ones
-oconf=/etc/ssl/openssl.cnf # Default path Openssl config
+
 
 err(){
-    echo "E: $@" >>/dev/stderr
+    echo "E: $*" >>/dev/stderr
 }
+
+
+# Find an openssl config file
+if [[ -f /etc/ssl/openssl.cnf ]]; then
+    oconf=/etc/ssl/openssl.cnf                  # Default path Openssl config
+elif [[ -f /etc/pki/tls/openssl.cnf ]]; then
+    oconf=/etc/pki/tls/openssl.cnf              # For redhat
+elif [[ -f openssl.cnf ]]; then                 # this must be the last condition to check
+    oconf=openssl.cnf                           # Fallback config
+    # There must not be any 'else' block here
+fi
+
 
 get_arg(){
     if [ -z "$1" ]; then
@@ -59,16 +71,16 @@ while [ $# -gt 0 ]; do
             dkeyfile="$(get_arg "$2")"
             shift
             ;;
-            -r|--redhat)
-            oconf=/etc/pki/tls/openssl.cnf
-            shift
-            ;;
             -csr|--csr)
             csrfile="$(get_arg "$2")"
             shift
             ;;
             -c|--conf)
             conf="$(get_arg "$2")"
+            shift
+            ;;
+            -ocf|--openssl-config-file)
+            oconf="$(get_arg "$2")"
             shift
             ;;
             -ks|--key-size)
@@ -97,6 +109,13 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
+
+if [[ -f "$oconf" ]]; then
+    echo "OpenSSL config file: $oconf"
+else
+    err "OpenSSL config file not found: $oconf"
+    exit 1
+fi
 
 if [ ! -f "$dkeyfile" ] || $new; then
     echo 'Creating new key file: '"$dkeyfile"
