@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Md. Jahidul Hamid https://github.com/neurobin" />
+  <meta name="date" content="2017-08-25" />
+  <title>gencsr(1) gencsr user manual</title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<div id="header">
+<h1 class="title">gencsr(1) gencsr user manual</h1>
+<h2 class="author">Md. Jahidul Hamid <a href="https://github.com/neurobin" class="uri">https://github.com/neurobin</a></h2>
+<h3 class="date">August 25, 2017</h3>
+</div>
+<h1 id="name">NAME</h1>
+<p><strong>gencsr</strong> -- Simple CSR generator</p>
+<h1 id="synopsis">SYNOPSIS</h1>
+<p><strong>gencsr</strong> [ options ]</p>
+<h1 id="dependencies">DEPENDENCIES</h1>
+<ol style="list-style-type: decimal">
+<li>Bash</li>
+<li>openssl</li>
+</ol>
+<h1 id="usage">USAGE</h1>
+<p><strong><code>gencsr</code> expects a dom.list and gencsr.conf file under current directory if not specified specifically</strong></p>
+<ol style="list-style-type: decimal">
+<li>Create a <strong>dom.list</strong> file in the working directory with domain and subdomain names (one per line, both www and non-www versions). The top entry is taken as CN (Common Name).</li>
+<li>Edit the <strong>gencsr.conf</strong> file under current working directory (you may copy it from <em>/etc/gencsr.conf</em> if <code>gencsr</code> is indtalled) and put necessary information (country code, state, organization name etc ...).</li>
+<li>Run <code>gencsr</code>.</li>
+</ol>
+<h1 id="options">OPTIONS</h1>
+<dl>
+<dt>-df, --dom-file <em>dom_file_path</em></dt>
+<dd>File containing domain per line [dom.list]
+</dd>
+<dt>-k, --key <em>key_file_path</em></dt>
+<dd>Private key file (existing or to be created) [dom.key]
+</dd>
+<dt>-ks, --key-size <em>key_size</em></dt>
+<dd>Key size if key is to be created a-new. [4096]
+</dd>
+<dt>-csr, --csr <em>csr_file_path</em></dt>
+<dd>CSR file to be created [dom.csr]
+</dd>
+<dt>-c, --conf <em>config_file_path</em></dt>
+<dd><strong>gencsr</strong> configuration file [gencsr.conf]
+</dd>
+<dt>-oc, --openssl-conf <em>openssl_config_file</em></dt>
+<dd>OpenSSL config file (use this if <code>gencsr</code> can't find it). By default, it is searched as <code>/etc/ssl/openssl.cnf</code> or <code>/etc/pki/tls/openssl.cnf</code> or <code>./openssl.cnf</code>.
+</dd>
+<dt>-n, --new</dt>
+<dd>Always create new [false]
+</dd>
+<dt>-h, --help</dt>
+<dd>Show help
+</dd>
+<dt>-v, --version</dt>
+<dd>Show version info
+</dd>
+</dl>
+<h1 id="examples">Examples</h1>
+<p>The following creates a new 2048 bit key and saves it into <em>kfile</em>, takes necessary information from <em>cfile</em>, takes the domain list from <em>dfile</em> and creates a CSR file named <em>csrfile.csr</em>:</p>
+<pre class="sh"><code>gencsr -n -ks 2048 -k kfile -df dfile -c cfile -csr csrfile.csr</code></pre>
+<p>The following creates CSR using the existing kfile:</p>
+<pre class="sh"><code>gencsr -k kfile -df dfile -c cfile -csr csrfile.csr</code></pre>
+<h1 id="configuration-file">CONFIGURATION FILE</h1>
+<p>This file is parsed by gencsr to get various information. Path to this file can be given by the <code>-c</code> or <code>--conf</code> options. If no path is given, the path is defaulted to <code>./gencsr.conf</code>.</p>
+<p>This is how a typical configuration file for gencsr looks like:</p>
+<pre class="conf"><code>############# gencsr config file #####################
+# Do not use quotation marks (&#39;, &quot;&quot;)
+# To prevent any entry being included, comment them
+# by adding a # at the beginning
+######################################################
+CountryCode=US                              
+State=My state                              
+Locality=My city                            
+Oraganization=My organization               
+OraganizationUnit=Technology or whatever   
+Email=mymail@somedomain.com                 </code></pre>
+<h1 id="domain-file">DOMAIN FILE</h1>
+<p>This is a file containing domain names per line. Put both www and non-www versions. Put the CN (root domain) at top. Path to this file can be provided by the <code>-df</code> or <code>--dom-file</code> options. If no path is given, it's defaulted to <code>./dom.list</code>.</p>
+<p>This is how a domain file looks like:</p>
+<pre><code>example.org
+www.example.org
+docs.example.org
+www.docs.example.org
+api.example.org
+www.api.example.org
+forums.example.org
+www.forums.example.org</code></pre>
+<h1 id="bug-report">BUG REPORT</h1>
+<p><a href="https://github.com/neurobin/gencsr/issues" class="uri">https://github.com/neurobin/gencsr/issues</a></p>
+</body>
+</html>
