@@ -178,7 +178,7 @@ finish(){
     echo "##### Cleaning ... #####"
     rm "$tmpf" && echo "Deleted $tmpf" || err "Failed to delete $tmpf"
     
-    echo "##### Cleaned ##########"
+    echo "########################"
     
     if [[ "$success" = yes ]]; then
         echo "Successfully created CSR file: $csrfile"
