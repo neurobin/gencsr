@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-ver='0.0.3'
+ver='0.0.4'
 auth='Md. Jahidul Hamid'
 bug='https://github.com/neurobin/gencsr/issues'
 ver_info="
