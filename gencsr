@@ -37,7 +37,7 @@ new=false           # if true, gencsr will always create new files without using
 
 
 err(){
-    echo "E: $*" >>/dev/stderr
+    echo "E: $*" >&2
 }
 
 
@@ -171,7 +171,11 @@ if [ -n "$email" ]; then
     subj="$subj/emailAddress=$email"
 fi
 
-if openssl req -new -sha256 -key "$dkeyfile" -subj "$subj" -reqexts SAN -config <(cat "$oconf" <(printf "[SAN]\nsubjectAltName=$subjectAltName")) -out "$csrfile"; then
+tmpf=$(mktemp)
+cat "$oconf" > "$tmpf"
+printf "[SAN]\nsubjectAltName=$subjectAltName" >> "$tmpf"
+
+if openssl req -new -sha256 -key "$dkeyfile" -subj "$subj" -reqexts SAN -config "$tmpf" -out "$csrfile"; then
     echo "Successfully created CSR file: $csrfile"
 else
     err 'Failed to create CSR file!'
