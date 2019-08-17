@@ -175,7 +175,10 @@ tmpf=$(mktemp)
 
 
 finish(){
+    echo "##### Cleaning ... #####"
     rm "$tmpf" && echo "Deleted $tmpf" || err "Failed to delete $tmpf"
+    
+    echo "##### Cleaned ##########"
     
     if [[ "$success" = yes ]]; then
         echo "Successfully created CSR file: $csrfile"
