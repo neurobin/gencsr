@@ -172,12 +172,25 @@ if [ -n "$email" ]; then
 fi
 
 tmpf=$(mktemp)
+
+
+finish(){
+    rm "$tmpf" && echo "Deleted $tmpf" || err "Failed to delete $tmpf"
+    
+    if [[ "$success" = yes ]]; then
+        echo "Successfully created CSR file: $csrfile"
+    else
+        err 'Failed to create CSR file!'
+    fi
+}
+
+trap finish SIGTERM EXIT SIGQUIT
+
 cat "$oconf" > "$tmpf"
 printf "[SAN]\nsubjectAltName=$subjectAltName" >> "$tmpf"
 
 if openssl req -new -sha256 -key "$dkeyfile" -subj "$subj" -reqexts SAN -config "$tmpf" -out "$csrfile"; then
-    echo "Successfully created CSR file: $csrfile"
+    success=yes
 else
-    err 'Failed to create CSR file!'
     exit 1
 fi
