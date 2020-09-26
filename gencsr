@@ -35,10 +35,20 @@ conf=gencsr.conf    # Configuration file
 key_size=4096       # key size
 new=false           # if true, gencsr will always create new files without using existing ones
 
-
 err(){
     echo "E: $*" >&2
 }
+
+if [[ "${OSTYPE}" == "darwin"* ]]; then
+    if hash gsed &>/dev/null; then
+        SED=gsed
+    else
+        err "${SCRIPT} requires GNU sed for Mac. You may use homebrew to install it --> brew install gnu-sed"
+        exit 3
+    fi
+else
+    SED=sed
+fi
 
 
 # Find an openssl config file
@@ -131,19 +141,19 @@ else
 fi
 
 CN="$(head -1 "$domfile")"
-subjectAltName="$(sed -e '/^[[:blank:]]*$/d' \
+subjectAltName="$(${SED} -e '/^[[:blank:]]*$/d' \
     -e 's/^[[:blank:]]*//' \
     -e 's/[[:blank:]]*$//' \
     -e 's/^/DNS:/' "$domfile" |
     tr '\n' ',')"
 subjectAltName="${subjectAltName/%,/}"
 
-country_code="$(sed -n -e 's/^[[:blank:]]*CountryCode[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |sed -e 's/[[:blank:]]*$//')"
-state="$(sed -n -e 's/^[[:blank:]]*State[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |sed -e 's/[[:blank:]]*$//')"
-locality="$(sed -n -e 's/^[[:blank:]]*Locality[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |sed -e 's/[[:blank:]]*$//')"
-org="$(sed -n -e 's/^[[:blank:]]*Oraganization[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |sed -e 's/[[:blank:]]*$//')"
-org_unit="$(sed -n -e 's/^[[:blank:]]*OraganizationUnit[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |sed -e 's/[[:blank:]]*$//')"
-email="$(sed -n -e 's/^[[:blank:]]*Email[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |sed -e 's/[[:blank:]]*$//')"
+country_code="$(${SED} -n -e 's/^[[:blank:]]*CountryCode[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |${SED} -e 's/[[:blank:]]*$//')"
+state="$(${SED} -n -e 's/^[[:blank:]]*State[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |${SED} -e 's/[[:blank:]]*$//')"
+locality="$(${SED} -n -e 's/^[[:blank:]]*Locality[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |${SED} -e 's/[[:blank:]]*$//')"
+org="$(${SED} -n -e 's/^[[:blank:]]*Oraganization[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |${SED} -e 's/[[:blank:]]*$//')"
+org_unit="$(${SED} -n -e 's/^[[:blank:]]*OraganizationUnit[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |${SED} -e 's/[[:blank:]]*$//')"
+email="$(${SED} -n -e 's/^[[:blank:]]*Email[[:blank:]]*=[[:blank:]]*\([^#]*\).*$/\1/pi' "$conf" |${SED} -e 's/[[:blank:]]*$//')"
 
 subj="/CN=$CN"
 
